@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  php:
+    image: appkr/laravel-app
+    container_name: laravel-app
+    build:
+      context: ./
+      dockerfile: docker/php.docker
+    volumes:
+      - ./:/var/www/html
+  nginx:
+    image: appkr/laravel-web
+    container_name: laravel-web
+    build:
+      context: ./
+      dockerfile: docker/nginx.docker
+    volumes:
+      - ./logs/nginx:/var/log/nginx
+    ports:
+      - 8888:80
+    depends_on:
+      - php
+    links:
+      - php
